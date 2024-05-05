@@ -1,0 +1,32 @@
+[
+{
+  "directory": "/home/tensei/code/modou/build",
+  "command": "/usr/bin/g++ -Dmudou_EXPORTS  -g -fPIC -o CMakeFiles/mudou.dir/Channel.o -c /home/tensei/code/modou/Channel.cpp",
+  "file": "/home/tensei/code/modou/Channel.cpp"
+},
+{
+  "directory": "/home/tensei/code/modou/build",
+  "command": "/usr/bin/g++ -Dmudou_EXPORTS  -g -fPIC -o CMakeFiles/mudou.dir/EventLoop.o -c /home/tensei/code/modou/EventLoop.cpp",
+  "file": "/home/tensei/code/modou/EventLoop.cpp"
+},
+{
+  "directory": "/home/tensei/code/modou/build",
+  "command": "/usr/bin/g++ -Dmudou_EXPORTS  -g -fPIC -o CMakeFiles/mudou.dir/InetAddr.o -c /home/tensei/code/modou/InetAddr.cpp",
+  "file": "/home/tensei/code/modou/InetAddr.cpp"
+},
+{
+  "directory": "/home/tensei/code/modou/build",
+  "command": "/usr/bin/g++ -Dmudou_EXPORTS  -g -fPIC -o CMakeFiles/mudou.dir/Logger.o -c /home/tensei/code/modou/Logger.cpp",
+  "file": "/home/tensei/code/modou/Logger.cpp"
+},
+{
+  "directory": "/home/tensei/code/modou/build",
+  "command": "/usr/bin/g++ -Dmudou_EXPORTS  -g -fPIC -o CMakeFiles/mudou.dir/TcpServer.o -c /home/tensei/code/modou/TcpServer.cpp",
+  "file": "/home/tensei/code/modou/TcpServer.cpp"
+},
+{
+  "directory": "/home/tensei/code/modou/build",
+  "command": "/usr/bin/g++ -Dmudou_EXPORTS  -g -fPIC -o CMakeFiles/mudou.dir/Timestamp.o -c /home/tensei/code/modou/Timestamp.cpp",
+  "file": "/home/tensei/code/modou/Timestamp.cpp"
+}
+]
