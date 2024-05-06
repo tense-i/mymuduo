@@ -9,11 +9,8 @@ InetAddr::InetAddr(uint16_t port, std::string ip)
     addr_.sin_addr.s_addr = inet_addr(ip.c_str());
 }
 
-InetAddr::InetAddr(const sockaddr_in &addr)
+InetAddr::InetAddr(const sockaddr_in &addr) : addr_(addr)
 {
-    addr_.sin_addr = addr.sin_addr;
-    addr_.sin_family = addr.sin_family;
-    addr_.sin_port = addr.sin_port;
 }
 
 InetAddr::~InetAddr()

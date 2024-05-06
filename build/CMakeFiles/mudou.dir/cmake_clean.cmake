@@ -9,6 +9,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/mudou.dir/InetAddr.o.d"
   "CMakeFiles/mudou.dir/Logger.o"
   "CMakeFiles/mudou.dir/Logger.o.d"
+  "CMakeFiles/mudou.dir/Poller.o"
+  "CMakeFiles/mudou.dir/Poller.o.d"
   "CMakeFiles/mudou.dir/TcpServer.o"
   "CMakeFiles/mudou.dir/TcpServer.o.d"
   "CMakeFiles/mudou.dir/Timestamp.o"

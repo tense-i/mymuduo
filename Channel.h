@@ -7,7 +7,7 @@
 class EventLoop;
 
 /**
- * @brief Channel理解为通道、处理socketfd的事件分发
+ * @brief Channel理解为通道、处理socketfd的事件分发.但是**Channel并不负责fd的生命周期**（P281, 8.1.1节），fd的生命周期是交给Socket类来管理的.
  */
 class Channel : noncopyable
 {
@@ -36,8 +36,9 @@ private:
     EventCB closeCallBack_;
     EventCB errorCallBack_;
 
+public:
     /**
-     * @brief fd触发的事件、由handler分发
+     * @brief fd触发的事件、由handler分发.fd得到poller通知以后，处理事件的
      */
     void handleEvent(Timestamp receiveTime);
 
@@ -89,7 +90,7 @@ private:
     void remove();
 
 private:
-    void updateEpoll();
+    void update();
     void handleEventWithGuard(Timestamp receiveTime);
 
 public:

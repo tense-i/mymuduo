@@ -21,6 +21,11 @@
 },
 {
   "directory": "/home/tensei/code/modou/build",
+  "command": "/usr/bin/g++ -Dmudou_EXPORTS  -g -fPIC -o CMakeFiles/mudou.dir/Poller.o -c /home/tensei/code/modou/Poller.cpp",
+  "file": "/home/tensei/code/modou/Poller.cpp"
+},
+{
+  "directory": "/home/tensei/code/modou/build",
   "command": "/usr/bin/g++ -Dmudou_EXPORTS  -g -fPIC -o CMakeFiles/mudou.dir/TcpServer.o -c /home/tensei/code/modou/TcpServer.cpp",
   "file": "/home/tensei/code/modou/TcpServer.cpp"
 },

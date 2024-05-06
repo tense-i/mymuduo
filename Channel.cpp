@@ -1,4 +1,6 @@
 #include "Channel.h"
+#include "Logger.h"
+
 #include <sys/epoll.h>
 
 const int Channel::kNoneEvent = 0;
@@ -16,21 +18,35 @@ Channel::~Channel()
 {
 }
 
+/**
+ * @brief 该channel是否是未监视任何事件
+ */
 bool Channel::isNoneEvent() const
 {
     return events_ == kNoneEvent;
 }
 
+/**
+ * @brief 该channel的fd是否监听写事件
+ */
 bool Channel::isWriting() const
 {
     return events_ & kWriteEvent;
 }
 
+/**
+ * @brief 该channel的fd是否监听读事件
+ */
 bool Channel::isReading() const
 {
     return events_ & kReadEvent;
 }
 
+/**
+ * @brief 表示当前channel在EpollPoller中的状态。取值为kNew、kAdded kDeleted
+ * kNew:没有进入EpollPoller
+ * kAdded:进入过EpollPoller
+ */
 int Channel::index()
 {
     return index_;
@@ -41,12 +57,17 @@ void Channel::set_index(int idx)
     index_ = idx;
 }
 
+/**
+ * @brief 定义EPoller所属的事件循环EventLoop
+ */
 EventLoop *Channel::ownerLoop()
 {
     return loop_;
 }
 
-// 在channel所属的eventloop中、把当前的channel删除
+/**
+ * @brief 在channel所属的eventloop中、把当前的channel删除
+ */
 void Channel::remove()
 {
     // redo add code...
@@ -54,32 +75,38 @@ void Channel::remove()
 }
 
 /**
- * @brief 改变channel所表示的fd的事件后、updateEpoll负责再poller里面更改fd相应的Epoll节点
+ * @brief 当改变channel所表示fd的events事件后，update负责在poller里面更改fd相应的事件epoll_ctl
+ * EventLoop => ChannelList   Poller
  */
-void Channel::updateEpoll()
+void Channel::update()
 {
     // 通过channel所属的eventloop、调用poller的相应方法、注册fd的events事件
     // loop_->updateChannel(this);
 }
 
+/**
+ * @brief 根据poller通知的channel发生的具体事件， 由channel负责调用具体的回调操作
+ * @param receiveTime epoll_wait返回的时间戳。
+ */
 void Channel::handleEventWithGuard(Timestamp receiveTime)
 {
+    LOG_INFO("channel handleEvent revents:%d\n", revents_);
     if ((revents_ & EPOLLHUP) && !(revents_ & EPOLLIN)) // 客户端连接断开
     {
         if (closeCallBack_)
             closeCallBack_();
     }
-    else if ((revents_ & EPOLLIN)) //
+    else if (revents_ & (EPOLLIN | EPOLLPRI)) // 读
     {
         if (readCallBack_)
             readCallBack_(receiveTime);
     }
-    else if ((revents_ & EPOLLOUT))
+    else if ((revents_ & EPOLLOUT)) // 写
     {
         if (writeCallBack_)
             writeCallBack_();
     }
-    else if ((revents_ & EPOLLERR))
+    else if ((revents_ & EPOLLERR)) // 错误
     {
         if (errorCallBack_)
             errorCallBack_();
@@ -112,32 +139,52 @@ void Channel::tie(const std::shared_ptr<void> &obj)
     tied_ = true;
 }
 
+int Channel::fd()
+{
+    return this->fd_;
+}
+
+int Channel::events()
+{
+    return events_;
+}
+
+int Channel::revents()
+{
+    return revents_;
+}
+
+void Channel::setRevent(int revents)
+{
+    revents_ = revents;
+}
+
 void Channel::enableReading()
 {
     events_ |= kReadEvent;
-    updateEpoll();
+    update();
 }
 
 void Channel::disableReading()
 {
     events_ &= ~kReadEvent;
-    updateEpoll();
+    update();
 }
 
 void Channel::enableWriting()
 {
     events_ |= kWriteEvent;
-    updateEpoll();
+    update();
 }
 
 void Channel::disableWriting()
 {
     events_ &= ~kWriteEvent;
-    updateEpoll();
+    update();
 }
 
 void Channel::disableAll()
 {
     events_ = kNoneEvent;
-    updateEpoll();
+    update();
 }

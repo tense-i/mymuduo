@@ -190,6 +190,21 @@ Logger.s:
 .PHONY : Logger.s
 
 # target to build an object file
+Poller.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mudou.dir/build.make CMakeFiles/mudou.dir/Poller.o
+.PHONY : Poller.o
+
+# target to preprocess a source file
+Poller.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mudou.dir/build.make CMakeFiles/mudou.dir/Poller.i
+.PHONY : Poller.i
+
+# target to generate assembly for a file
+Poller.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mudou.dir/build.make CMakeFiles/mudou.dir/Poller.s
+.PHONY : Poller.s
+
+# target to build an object file
 TcpServer.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mudou.dir/build.make CMakeFiles/mudou.dir/TcpServer.o
 .PHONY : TcpServer.o
@@ -240,6 +255,9 @@ help:
 	@echo "... Logger.o"
 	@echo "... Logger.i"
 	@echo "... Logger.s"
+	@echo "... Poller.o"
+	@echo "... Poller.i"
+	@echo "... Poller.s"
 	@echo "... TcpServer.o"
 	@echo "... TcpServer.i"
 	@echo "... TcpServer.s"

@@ -8,10 +8,10 @@
     do                                                    \
     {                                                     \
         Logger &logger = Logger::instanceLogger();        \
-        Logger.setLogLever(INFO);                         \
+        logger.setLogLever(INFO);                         \
         char buf[1024];                                   \
         snprintf(buf, 1024, LogmsgFormat, ##__VA_ARGS__); \
-        Logger.log(buf);                                  \
+        logger.log(buf);                                  \
     } while (0)
 
 // LOG_INFO("%s %d ",arg1,arg2)
@@ -19,10 +19,10 @@
     do                                                    \
     {                                                     \
         Logger &logger = Logger::instanceLogger();        \
-        Logger.setLogLever(ERR);                          \
+        logger.setLogLever(ERR);                          \
         char buf[1024];                                   \
         snprintf(buf, 1024, LogmsgFormat, ##__VA_ARGS__); \
-        Logger.log(buf);                                  \
+        logger.log(buf);                                  \
     } while (0)
 
 // LOG_INFO("%s %d ",arg1,arg2)
@@ -30,10 +30,11 @@
     do                                                    \
     {                                                     \
         Logger &logger = Logger::instanceLogger();        \
-        Logger.setLogLever(FATAL);                        \
+        logger.setLogLever(FATAL);                        \
         char buf[1024];                                   \
         snprintf(buf, 1024, LogmsgFormat, ##__VA_ARGS__); \
-        Logger.log(buf);                                  \
+        logger.log(buf);                                  \
+        exit(-1);                                         \
     } while (0)
 
 #ifdef MUDEBUG
@@ -41,10 +42,10 @@
     do                                                    \
     {                                                     \
         Logger &logger = Logger::instanceLogger();        \
-        Logger.setLogLever(DEBUG);                        \
+        logger.setLogLever(DEBUG);                        \
         char buf[1024];                                   \
         snprintf(buf, 1024, LogmsgFormat, ##__VA_ARGS__); \
-        Logger.log(buf);                                  \
+        logger.log(buf);                                  \
     } while (0)
 #else
 #define LOG_DEBUG(LogmsgFormat, ...)
