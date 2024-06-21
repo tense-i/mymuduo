@@ -8,6 +8,7 @@ class EventLoop;
 
 /**
  * @brief Channel理解为通道、处理socketfd的事件分发.但是**Channel并不负责fd的生命周期**（P281, 8.1.1节），fd的生命周期是交给Socket类来管理的.
+ * @brief Channel与fd_是聚合关系-生命周期独立
  */
 class Channel : noncopyable
 {
@@ -21,7 +22,7 @@ private:
     static const int kNoneEvent;
     static const int kReadEvent;
     static const int kWriteEvent;
-    EventLoop *loop_; // 事件循环
+    EventLoop *loop_; // 并发下标识该Channel属于哪个事件循环
     const int fd_;    // fd poller监听的对象
     int events_;      // 注册fd感兴趣的事件
     int revents_;     // poller返回的具体发生的事件

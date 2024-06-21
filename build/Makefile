@@ -145,6 +145,36 @@ Channel.s:
 .PHONY : Channel.s
 
 # target to build an object file
+CurrentThread.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mudou.dir/build.make CMakeFiles/mudou.dir/CurrentThread.o
+.PHONY : CurrentThread.o
+
+# target to preprocess a source file
+CurrentThread.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mudou.dir/build.make CMakeFiles/mudou.dir/CurrentThread.i
+.PHONY : CurrentThread.i
+
+# target to generate assembly for a file
+CurrentThread.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mudou.dir/build.make CMakeFiles/mudou.dir/CurrentThread.s
+.PHONY : CurrentThread.s
+
+# target to build an object file
+EpollPoller.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mudou.dir/build.make CMakeFiles/mudou.dir/EpollPoller.o
+.PHONY : EpollPoller.o
+
+# target to preprocess a source file
+EpollPoller.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mudou.dir/build.make CMakeFiles/mudou.dir/EpollPoller.i
+.PHONY : EpollPoller.i
+
+# target to generate assembly for a file
+EpollPoller.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mudou.dir/build.make CMakeFiles/mudou.dir/EpollPoller.s
+.PHONY : EpollPoller.s
+
+# target to build an object file
 EventLoop.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mudou.dir/build.make CMakeFiles/mudou.dir/EventLoop.o
 .PHONY : EventLoop.o
@@ -158,6 +188,21 @@ EventLoop.i:
 EventLoop.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mudou.dir/build.make CMakeFiles/mudou.dir/EventLoop.s
 .PHONY : EventLoop.s
+
+# target to build an object file
+EventLoopThread.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mudou.dir/build.make CMakeFiles/mudou.dir/EventLoopThread.o
+.PHONY : EventLoopThread.o
+
+# target to preprocess a source file
+EventLoopThread.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mudou.dir/build.make CMakeFiles/mudou.dir/EventLoopThread.i
+.PHONY : EventLoopThread.i
+
+# target to generate assembly for a file
+EventLoopThread.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mudou.dir/build.make CMakeFiles/mudou.dir/EventLoopThread.s
+.PHONY : EventLoopThread.s
 
 # target to build an object file
 InetAddr.o:
@@ -220,6 +265,21 @@ TcpServer.s:
 .PHONY : TcpServer.s
 
 # target to build an object file
+Thread.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mudou.dir/build.make CMakeFiles/mudou.dir/Thread.o
+.PHONY : Thread.o
+
+# target to preprocess a source file
+Thread.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mudou.dir/build.make CMakeFiles/mudou.dir/Thread.i
+.PHONY : Thread.i
+
+# target to generate assembly for a file
+Thread.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mudou.dir/build.make CMakeFiles/mudou.dir/Thread.s
+.PHONY : Thread.s
+
+# target to build an object file
 Timestamp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mudou.dir/build.make CMakeFiles/mudou.dir/Timestamp.o
 .PHONY : Timestamp.o
@@ -246,9 +306,18 @@ help:
 	@echo "... Channel.o"
 	@echo "... Channel.i"
 	@echo "... Channel.s"
+	@echo "... CurrentThread.o"
+	@echo "... CurrentThread.i"
+	@echo "... CurrentThread.s"
+	@echo "... EpollPoller.o"
+	@echo "... EpollPoller.i"
+	@echo "... EpollPoller.s"
 	@echo "... EventLoop.o"
 	@echo "... EventLoop.i"
 	@echo "... EventLoop.s"
+	@echo "... EventLoopThread.o"
+	@echo "... EventLoopThread.i"
+	@echo "... EventLoopThread.s"
 	@echo "... InetAddr.o"
 	@echo "... InetAddr.i"
 	@echo "... InetAddr.s"
@@ -261,6 +330,9 @@ help:
 	@echo "... TcpServer.o"
 	@echo "... TcpServer.i"
 	@echo "... TcpServer.s"
+	@echo "... Thread.o"
+	@echo "... Thread.i"
+	@echo "... Thread.s"
 	@echo "... Timestamp.o"
 	@echo "... Timestamp.i"
 	@echo "... Timestamp.s"

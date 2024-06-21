@@ -76,7 +76,8 @@ void EventLoop::loop()
         }
         // 执行当前EventLoop事件循环需要处理的回调操作
         /**
-         * IO线程 mainLoop accept fd《=channel subloop
+         * IO线程 mainLoop acce
+         * pt fd《=channel subloop
          * mainLoop 事先注册一个回调cb（需要subloop来执行）    wakeup subloop后，执行下面的方法，执行之前mainloop注册的cb操作
          */
         doPendingFunctors();
@@ -112,12 +113,14 @@ Timestamp EventLoop::pollReturnTime() const
  */
 void EventLoop::runInLoop(Functor cb)
 {
+    // q:为什么要分开处理？
     if (isInLoopThread()) // 在当前的loop线程中，执行cb
     {
         cb();
     }
-    else // 在非当前loop线程中执行cb , 就需要唤醒loop所在线程，执行cb
+    else // 当前loop所在线程和cb所在线程不是同一个线程，不应该在当前loop线程中执行cb
     {
+        // 保存到队列中，唤醒loop所在线程，执行cb
         queueInLoop(cb);
     }
 }
@@ -129,6 +132,7 @@ void EventLoop::queueInLoop(Functor cb)
 {
     {
         // 为什么要加锁？？
+        // 因为有可能在多个线程中调用queueInLoop()函数，向pendingFunctors_中添加回调函数
         std::unique_lock<std::mutex> lock(mutex_);
         pendingFunctors_.emplace_back(cb);
     }
@@ -189,6 +193,9 @@ void EventLoop::doPendingFunctors() // 执行回调
     // 为什么要用临时数组保存？
     // 在下面foreach执行过程中、有可能其它线程在往pendingFunctors_中插入回调函数。所以要加锁
     std::vector<Functor> functors;
+    // q:为什么要用一个临时变量来存储回调函数？
+    // a:因为在执行回调函数的过程中，有可能会再次调用queueInLoop()函数，从而向pendingFunctors_中添加新的回调函数。
+
     callingPendingFunctors_ = true;
 
     {

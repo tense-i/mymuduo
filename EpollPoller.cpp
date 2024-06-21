@@ -67,10 +67,15 @@ void EpollPoller::fillActiveChannels(int numEvents, ChannelList *activeChannels)
     }
 }
 
+/**
+ * @brief 开启事件循环
+
+*/
 Timestamp EpollPoller::poll(int timeoutMs, ChannelList *activeChannels)
 {
     // 实际上应该用LOG_DEBUG输出日志更为合理
     LOG_INFO("func=%s => fd total count:%lu \n", __FUNCTION__, Channels_.size());
+    // 取vector的首地址-&(*events_.begin())
     int readyNumEvent = epoll_wait(epollfd_, &(*events_.begin()), static_cast<int>(Channels_.size()), timeoutMs);
     int saveErrno = errno;
     Timestamp now(Timestamp::now());

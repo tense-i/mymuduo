@@ -6,8 +6,23 @@
 },
 {
   "directory": "/home/tensei/code/modou/build",
+  "command": "/usr/bin/g++ -Dmudou_EXPORTS  -g -fPIC -o CMakeFiles/mudou.dir/CurrentThread.o -c /home/tensei/code/modou/CurrentThread.cpp",
+  "file": "/home/tensei/code/modou/CurrentThread.cpp"
+},
+{
+  "directory": "/home/tensei/code/modou/build",
+  "command": "/usr/bin/g++ -Dmudou_EXPORTS  -g -fPIC -o CMakeFiles/mudou.dir/EpollPoller.o -c /home/tensei/code/modou/EpollPoller.cpp",
+  "file": "/home/tensei/code/modou/EpollPoller.cpp"
+},
+{
+  "directory": "/home/tensei/code/modou/build",
   "command": "/usr/bin/g++ -Dmudou_EXPORTS  -g -fPIC -o CMakeFiles/mudou.dir/EventLoop.o -c /home/tensei/code/modou/EventLoop.cpp",
   "file": "/home/tensei/code/modou/EventLoop.cpp"
+},
+{
+  "directory": "/home/tensei/code/modou/build",
+  "command": "/usr/bin/g++ -Dmudou_EXPORTS  -g -fPIC -o CMakeFiles/mudou.dir/EventLoopThread.o -c /home/tensei/code/modou/EventLoopThread.cpp",
+  "file": "/home/tensei/code/modou/EventLoopThread.cpp"
 },
 {
   "directory": "/home/tensei/code/modou/build",
@@ -28,6 +43,11 @@
   "directory": "/home/tensei/code/modou/build",
   "command": "/usr/bin/g++ -Dmudou_EXPORTS  -g -fPIC -o CMakeFiles/mudou.dir/TcpServer.o -c /home/tensei/code/modou/TcpServer.cpp",
   "file": "/home/tensei/code/modou/TcpServer.cpp"
+},
+{
+  "directory": "/home/tensei/code/modou/build",
+  "command": "/usr/bin/g++ -Dmudou_EXPORTS  -g -fPIC -o CMakeFiles/mudou.dir/Thread.o -c /home/tensei/code/modou/Thread.cpp",
+  "file": "/home/tensei/code/modou/Thread.cpp"
 },
 {
   "directory": "/home/tensei/code/modou/build",

@@ -31,6 +31,9 @@ public:
     /**
      * @brief 给所有IO复用保留同一的接口--纯虚函数
      */
+    /**
+     * @brief 开启事件循环
+     */
     virtual Timestamp poll(int timeoutMs, ChannelList *activeChannels) = 0;
     virtual void updateChannel(Channel *channel) = 0;
     virtual void removeChannle(Channel *channel) = 0;
