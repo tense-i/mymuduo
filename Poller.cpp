@@ -5,10 +5,6 @@ Poller::Poller(EventLoop *loop) : ownerLoop_(loop)
 {
 }
 
-Poller::~Poller()
-{
-}
-
 bool Poller::hasChannel(Channel *channel) const
 {
     auto it = Channels_.find(channel->fd());

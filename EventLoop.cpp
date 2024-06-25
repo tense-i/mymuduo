@@ -55,12 +55,14 @@ EventLoop::~EventLoop()
     t_loopInthisThread = nullptr;
 }
 
-// 开启事件循环
+/**
+ * @brief 开启上层事件循环
+ */
 void EventLoop::loop()
 {
     looping_ = true;
     quit_ = false;
-    LOG_INFO("");
+    LOG_INFO("EventLoop %p start looping \n", this);
 
     while (!quit_)
     {
@@ -220,6 +222,6 @@ void EventLoop::handleRead()
     ssize_t n = read(wakeupfd_, &one, sizeof(one));
     if (n != sizeof(one))
     {
-        LOG_ERROR("eventloop::handleRead() reads %dbyters instead of 8", n);
+        LOG_ERROR("eventloop::handleRead() reads %d byters instead of 8", n);
     }
 }

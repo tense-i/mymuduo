@@ -13,7 +13,10 @@ class Channel;
 class Poller;
 
 /**
- * @brief 事件循环类  主要包含了两个大模块 Channel   Poller（epoll的抽象）
+ * @brief 事件循环类  主要包含了两个大模块 Channel   Poller（epoll的抽象）。EventLoop是Reactor模式的核心
+ * 1. 启动或者退出事件循环
+ * 2. 保证一个线程只能对应一个EventLoop对象
+ *
  */
 class EventLoop : noncopyable
 {

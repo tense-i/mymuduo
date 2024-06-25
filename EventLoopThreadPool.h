@@ -9,18 +9,22 @@
 class EventLoop;
 class EventLoopThread;
 
+// q: EventLoopThreadPool类的作用是什么？
+// a: EventLoopThreadPool类的作用是创建指定数量的EventLoop对象，用于多线程中的事件循环处理。
+// a: 一个程序中可以有多个EvenetLoopPool对象，每个EventLoopPool对象中可以有多个EventLoop对象。
+// a: 同一管理多个EventLoop对象，用于多线程中的事件循环处理。
 class EventLoopThreadPool : noncopyable
 {
 private:
-    // 不使用并发时的根EventLoop
+    // 服务端的主EventLoop、单线程时的EventLoop
     EventLoop *baseLoop_;
     std::string name_;
     bool started_;
-    int numThreads_;
+    int numThreads_; // 线程池中线程的数量
     // 线程池的下一个要执行的EventLoop-0开始
     int next_;
-    std::vector<std::unique_ptr<EventLoopThread>> threads_;
-    std::vector<EventLoop *> loops_;
+    std::vector<std::unique_ptr<EventLoopThread>> threads_; // 该EventLoopThreadPool线程池中的线程集合
+    std::vector<EventLoop *> loops_;                        // 该EventLoopThreadPool线程池中的EventLoop集合
 
 public:
     using ThreadInitCallback = std::function<void(EventLoop *)>;
@@ -34,4 +38,6 @@ public:
 
     bool started() const { return started_; }
     const std::string name() const { return name_; }
+
+    void setThreadNum(int numThreads) { numThreads_ = numThreads; }
 };

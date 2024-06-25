@@ -227,6 +227,15 @@ mudou_IS_TOP_LEVEL:STATIC=ON
 //Value Computed by CMake
 mudou_SOURCE_DIR:STATIC=/home/tensei/code/modou
 
+//Value Computed by CMake
+mymuduo_BINARY_DIR:STATIC=/home/tensei/code/modou/build
+
+//Value Computed by CMake
+mymuduo_IS_TOP_LEVEL:STATIC=ON
+
+//Value Computed by CMake
+mymuduo_SOURCE_DIR:STATIC=/home/tensei/code/modou
+
 
 ########################
 # INTERNAL cache entries

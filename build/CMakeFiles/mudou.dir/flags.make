@@ -6,5 +6,5 @@ CXX_DEFINES = -Dmudou_EXPORTS
 
 CXX_INCLUDES = 
 
-CXX_FLAGS = -g -fPIC
+CXX_FLAGS =  -g -std=c++11 -fPIC -g -fPIC
 

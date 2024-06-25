@@ -7,7 +7,7 @@ Poller *Poller::newDefaultPolle(EventLoop *loop)
 {
     if (::getenv("MUDOU_USE_POLL"))
     {
-        return nullptr; // 生成poll的实例
+        return nullptr; // 生成pollpoller的实例
     }
     else
     {

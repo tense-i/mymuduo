@@ -9,6 +9,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/tensei/code/modou/Acceptor.cpp" "CMakeFiles/mudou.dir/Acceptor.o" "gcc" "CMakeFiles/mudou.dir/Acceptor.o.d"
+  "/home/tensei/code/modou/Buffer.cpp" "CMakeFiles/mudou.dir/Buffer.o" "gcc" "CMakeFiles/mudou.dir/Buffer.o.d"
   "/home/tensei/code/modou/Channel.cpp" "CMakeFiles/mudou.dir/Channel.o" "gcc" "CMakeFiles/mudou.dir/Channel.o.d"
   "/home/tensei/code/modou/CurrentThread.cpp" "CMakeFiles/mudou.dir/CurrentThread.o" "gcc" "CMakeFiles/mudou.dir/CurrentThread.o.d"
   "/home/tensei/code/modou/EpollPoller.cpp" "CMakeFiles/mudou.dir/EpollPoller.o" "gcc" "CMakeFiles/mudou.dir/EpollPoller.o.d"
@@ -19,6 +20,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/tensei/code/modou/Logger.cpp" "CMakeFiles/mudou.dir/Logger.o" "gcc" "CMakeFiles/mudou.dir/Logger.o.d"
   "/home/tensei/code/modou/Poller.cpp" "CMakeFiles/mudou.dir/Poller.o" "gcc" "CMakeFiles/mudou.dir/Poller.o.d"
   "/home/tensei/code/modou/Socket.cpp" "CMakeFiles/mudou.dir/Socket.o" "gcc" "CMakeFiles/mudou.dir/Socket.o.d"
+  "/home/tensei/code/modou/TcpConnection.cpp" "CMakeFiles/mudou.dir/TcpConnection.o" "gcc" "CMakeFiles/mudou.dir/TcpConnection.o.d"
   "/home/tensei/code/modou/TcpServer.cpp" "CMakeFiles/mudou.dir/TcpServer.o" "gcc" "CMakeFiles/mudou.dir/TcpServer.o.d"
   "/home/tensei/code/modou/Thread.cpp" "CMakeFiles/mudou.dir/Thread.o" "gcc" "CMakeFiles/mudou.dir/Thread.o.d"
   "/home/tensei/code/modou/Timestamp.cpp" "CMakeFiles/mudou.dir/Timestamp.o" "gcc" "CMakeFiles/mudou.dir/Timestamp.o.d"

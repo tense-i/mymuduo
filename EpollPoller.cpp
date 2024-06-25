@@ -54,21 +54,21 @@ void EpollPoller::update(int operation, Channel *channel)
 }
 
 /**
- * @brief 填写活跃的连接
+ * @brief 触发事件时、填写活跃的连接
  */
 void EpollPoller::fillActiveChannels(int numEvents, ChannelList *activeChannels) const
 {
     for (int i = 0; i < numEvents; i++)
     {
         Channel *chan = static_cast<Channel *>(events_[i].data.ptr);
-        chan->setRevent(events_[i].events);
+        chan->setRevent(events_[i].events); // 设置为发生的事件
         // eventLoop就拿到了它的poller给他返回的所有发生事件的channels列表
         activeChannels->push_back(chan);
     }
 }
 
 /**
- * @brief 开启事件循环
+ * @brief 开启事件循环，等待事件发生
 
 */
 Timestamp EpollPoller::poll(int timeoutMs, ChannelList *activeChannels)

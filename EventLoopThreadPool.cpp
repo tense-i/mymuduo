@@ -15,7 +15,9 @@ EventLoopThreadPool::~EventLoopThreadPool()
 }
 
 /**
- * @brief 创建指定数量的EventLoop
+ * @brief 启动指定数量的EventLoopThread进行服务
+ * @param cb 回调函数，用于在EventLoop对象创建完毕后执行一些初始化操作
+
  */
 void EventLoopThreadPool::start(const ThreadInitCallback &cb)
 {

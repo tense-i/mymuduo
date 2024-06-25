@@ -1,72 +1,82 @@
 [
 {
   "directory": "/home/tensei/code/modou/build",
-  "command": "/usr/bin/g++ -Dmudou_EXPORTS  -g -fPIC -o CMakeFiles/mudou.dir/Acceptor.o -c /home/tensei/code/modou/Acceptor.cpp",
+  "command": "/usr/bin/g++ -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC -o CMakeFiles/mymuduo.dir/Acceptor.o -c /home/tensei/code/modou/Acceptor.cpp",
   "file": "/home/tensei/code/modou/Acceptor.cpp"
 },
 {
   "directory": "/home/tensei/code/modou/build",
-  "command": "/usr/bin/g++ -Dmudou_EXPORTS  -g -fPIC -o CMakeFiles/mudou.dir/Channel.o -c /home/tensei/code/modou/Channel.cpp",
+  "command": "/usr/bin/g++ -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC -o CMakeFiles/mymuduo.dir/Buffer.o -c /home/tensei/code/modou/Buffer.cpp",
+  "file": "/home/tensei/code/modou/Buffer.cpp"
+},
+{
+  "directory": "/home/tensei/code/modou/build",
+  "command": "/usr/bin/g++ -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC -o CMakeFiles/mymuduo.dir/Channel.o -c /home/tensei/code/modou/Channel.cpp",
   "file": "/home/tensei/code/modou/Channel.cpp"
 },
 {
   "directory": "/home/tensei/code/modou/build",
-  "command": "/usr/bin/g++ -Dmudou_EXPORTS  -g -fPIC -o CMakeFiles/mudou.dir/CurrentThread.o -c /home/tensei/code/modou/CurrentThread.cpp",
+  "command": "/usr/bin/g++ -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC -o CMakeFiles/mymuduo.dir/CurrentThread.o -c /home/tensei/code/modou/CurrentThread.cpp",
   "file": "/home/tensei/code/modou/CurrentThread.cpp"
 },
 {
   "directory": "/home/tensei/code/modou/build",
-  "command": "/usr/bin/g++ -Dmudou_EXPORTS  -g -fPIC -o CMakeFiles/mudou.dir/EpollPoller.o -c /home/tensei/code/modou/EpollPoller.cpp",
+  "command": "/usr/bin/g++ -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC -o CMakeFiles/mymuduo.dir/EpollPoller.o -c /home/tensei/code/modou/EpollPoller.cpp",
   "file": "/home/tensei/code/modou/EpollPoller.cpp"
 },
 {
   "directory": "/home/tensei/code/modou/build",
-  "command": "/usr/bin/g++ -Dmudou_EXPORTS  -g -fPIC -o CMakeFiles/mudou.dir/EventLoop.o -c /home/tensei/code/modou/EventLoop.cpp",
+  "command": "/usr/bin/g++ -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC -o CMakeFiles/mymuduo.dir/EventLoop.o -c /home/tensei/code/modou/EventLoop.cpp",
   "file": "/home/tensei/code/modou/EventLoop.cpp"
 },
 {
   "directory": "/home/tensei/code/modou/build",
-  "command": "/usr/bin/g++ -Dmudou_EXPORTS  -g -fPIC -o CMakeFiles/mudou.dir/EventLoopThread.o -c /home/tensei/code/modou/EventLoopThread.cpp",
+  "command": "/usr/bin/g++ -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC -o CMakeFiles/mymuduo.dir/EventLoopThread.o -c /home/tensei/code/modou/EventLoopThread.cpp",
   "file": "/home/tensei/code/modou/EventLoopThread.cpp"
 },
 {
   "directory": "/home/tensei/code/modou/build",
-  "command": "/usr/bin/g++ -Dmudou_EXPORTS  -g -fPIC -o CMakeFiles/mudou.dir/EventLoopThreadPool.o -c /home/tensei/code/modou/EventLoopThreadPool.cpp",
+  "command": "/usr/bin/g++ -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC -o CMakeFiles/mymuduo.dir/EventLoopThreadPool.o -c /home/tensei/code/modou/EventLoopThreadPool.cpp",
   "file": "/home/tensei/code/modou/EventLoopThreadPool.cpp"
 },
 {
   "directory": "/home/tensei/code/modou/build",
-  "command": "/usr/bin/g++ -Dmudou_EXPORTS  -g -fPIC -o CMakeFiles/mudou.dir/InetAddr.o -c /home/tensei/code/modou/InetAddr.cpp",
+  "command": "/usr/bin/g++ -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC -o CMakeFiles/mymuduo.dir/InetAddr.o -c /home/tensei/code/modou/InetAddr.cpp",
   "file": "/home/tensei/code/modou/InetAddr.cpp"
 },
 {
   "directory": "/home/tensei/code/modou/build",
-  "command": "/usr/bin/g++ -Dmudou_EXPORTS  -g -fPIC -o CMakeFiles/mudou.dir/Logger.o -c /home/tensei/code/modou/Logger.cpp",
+  "command": "/usr/bin/g++ -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC -o CMakeFiles/mymuduo.dir/Logger.o -c /home/tensei/code/modou/Logger.cpp",
   "file": "/home/tensei/code/modou/Logger.cpp"
 },
 {
   "directory": "/home/tensei/code/modou/build",
-  "command": "/usr/bin/g++ -Dmudou_EXPORTS  -g -fPIC -o CMakeFiles/mudou.dir/Poller.o -c /home/tensei/code/modou/Poller.cpp",
+  "command": "/usr/bin/g++ -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC -o CMakeFiles/mymuduo.dir/Poller.o -c /home/tensei/code/modou/Poller.cpp",
   "file": "/home/tensei/code/modou/Poller.cpp"
 },
 {
   "directory": "/home/tensei/code/modou/build",
-  "command": "/usr/bin/g++ -Dmudou_EXPORTS  -g -fPIC -o CMakeFiles/mudou.dir/Socket.o -c /home/tensei/code/modou/Socket.cpp",
+  "command": "/usr/bin/g++ -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC -o CMakeFiles/mymuduo.dir/Socket.o -c /home/tensei/code/modou/Socket.cpp",
   "file": "/home/tensei/code/modou/Socket.cpp"
 },
 {
   "directory": "/home/tensei/code/modou/build",
-  "command": "/usr/bin/g++ -Dmudou_EXPORTS  -g -fPIC -o CMakeFiles/mudou.dir/TcpServer.o -c /home/tensei/code/modou/TcpServer.cpp",
+  "command": "/usr/bin/g++ -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC -o CMakeFiles/mymuduo.dir/TcpConnection.o -c /home/tensei/code/modou/TcpConnection.cpp",
+  "file": "/home/tensei/code/modou/TcpConnection.cpp"
+},
+{
+  "directory": "/home/tensei/code/modou/build",
+  "command": "/usr/bin/g++ -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC -o CMakeFiles/mymuduo.dir/TcpServer.o -c /home/tensei/code/modou/TcpServer.cpp",
   "file": "/home/tensei/code/modou/TcpServer.cpp"
 },
 {
   "directory": "/home/tensei/code/modou/build",
-  "command": "/usr/bin/g++ -Dmudou_EXPORTS  -g -fPIC -o CMakeFiles/mudou.dir/Thread.o -c /home/tensei/code/modou/Thread.cpp",
+  "command": "/usr/bin/g++ -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC -o CMakeFiles/mymuduo.dir/Thread.o -c /home/tensei/code/modou/Thread.cpp",
   "file": "/home/tensei/code/modou/Thread.cpp"
 },
 {
   "directory": "/home/tensei/code/modou/build",
-  "command": "/usr/bin/g++ -Dmudou_EXPORTS  -g -fPIC -o CMakeFiles/mudou.dir/Timestamp.o -c /home/tensei/code/modou/Timestamp.cpp",
+  "command": "/usr/bin/g++ -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC -o CMakeFiles/mymuduo.dir/Timestamp.o -c /home/tensei/code/modou/Timestamp.cpp",
   "file": "/home/tensei/code/modou/Timestamp.cpp"
 }
 ]

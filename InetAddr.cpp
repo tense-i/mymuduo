@@ -43,3 +43,8 @@ const sockaddr *InetAddr::getSockaddr() const
 {
     return (sockaddr *)&addr_;
 }
+
+void InetAddr::setSockaddr(const sockaddr_in &addr)
+{
+    addr_ = addr;
+}

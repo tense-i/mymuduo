@@ -162,5 +162,6 @@ CMakeFiles/mudou.dir/Channel.o: /home/tensei/code/modou/Channel.cpp \
  /usr/include/c++/11/backward/auto_ptr.h \
  /usr/include/c++/11/pstl/glue_memory_defs.h \
  /usr/include/c++/11/pstl/execution_defs.h \
+ /home/tensei/code/modou/Logger.h \
  /usr/include/x86_64-linux-gnu/sys/epoll.h \
  /usr/include/x86_64-linux-gnu/bits/epoll.h

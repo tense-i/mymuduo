@@ -36,7 +36,7 @@ void Thread::setDefaultName()
 }
 
 /**
- * @brief 启动线程。
+ * @brief 启动线程、需要保证start结束时线程创建成功（信号量）。
  */
 void Thread::start()
 {
