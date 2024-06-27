@@ -25,7 +25,7 @@ void EventLoopThreadPool::start(const ThreadInitCallback &cb)
     // 创建指定数量的线程，并将每个线程的EventLoop对象保存到loops_中
     for (int i = 0; i < numThreads_; i++)
     {
-        char buf[name_.size() + 32];
+        char buf[name_.size() + 32] = {0};
         snprintf(buf, sizeof buf, "%s%d", name_.c_str(), i); // 线程名
         EventLoopThread *t = new EventLoopThread(cb, buf);
         threads_.push_back(std::unique_ptr<EventLoopThread>(t));
@@ -65,6 +65,6 @@ std::vector<EventLoop *> EventLoopThreadPool::getAllLoops()
     }
     else
     {
-        loops_;
+        return loops_;
     }
 }

@@ -10,6 +10,7 @@ protected:
     ~noncopyable() = default;
 
 public:
+    // 将拷贝构造函数与拷贝赋值函数定义为删除函数、禁止拷贝构造与拷贝赋值
     noncopyable(const noncopyable &) = delete;
     noncopyable &operator=(const noncopyable &) = delete;
 };

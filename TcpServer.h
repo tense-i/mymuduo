@@ -2,10 +2,11 @@
 #include "EventLoop.h"
 #include "Acceptor.h"
 #include "InetAddr.h"
-#include "CallBacks.h"
-
 #include "noncopyable.h"
 #include "EventLoopThreadPool.h"
+#include "CallBacks.h"
+#include "TcpConnection.h"
+#include "Buffer.h"
 
 #include <functional>
 #include <string>
@@ -52,13 +53,13 @@ private:
 
     std::unique_ptr<Acceptor> acceptor_; // 运行在mainLoop，任务就是监听新连接事件
 
-    std::shared_ptr<EventLoopThreadPool> threadPool_; // 线程池，用于处理新连接的读写事件one loop per thread
+    std::shared_ptr<EventLoopThreadPool> threadPool_; // 线程池,mainLoop-->subLoop,用于处理新连接的读写事件
 
     ConnectionCallback connectionCallback_; // 有新连接时的回调函数
 
     MessageCallback messageCallback_; // 有读写事件时的回调函数
 
-    WriteCompleteCallback writeCompleteCallback_; // 有写事件时的回调函数
+    WriteCompleteCallback writeCompleteCallback_; // 写完成时的回调函数
 
     ThreadInitCallBack threadInitCallback_; // 线程初始化回调函数
 

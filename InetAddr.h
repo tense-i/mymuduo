@@ -4,6 +4,7 @@
 
 #include <string>
 
+// 网络地址类--->封装了sockaddr_in结构体（ipv4地址结构体）
 class InetAddr
 {
 private:

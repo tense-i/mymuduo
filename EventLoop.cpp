@@ -5,10 +5,16 @@
 
 #include <sys/eventfd.h>
 #include <fcntl.h>
+#include <unistd.h>
+#include <memory>
+#include <error.h>
 
 //// 防止一个线程创建多个EventLoop   thread_local
+// 只需要在子线程执行函数（即）中构造一个EventLoop对象，EventLoop的构造函数会把`t_loopInThisThread`初始化为this，这样一来，如果该线程中再次创建一个EventLoop对象时，就会在其构造函数中终止程序
+// 会在线程被创建时、初始化t_loopInthisThread
 __thread EventLoop *t_loopInthisThread = nullptr;
 
+// 定义默认的Poller IO复用接口的超时时间
 const int KPollTimeMs = 10000;
 
 int createEventfd()
@@ -22,23 +28,23 @@ int createEventfd()
 }
 
 EventLoop::EventLoop() : looping_(false),
-                         quit_(false),
-                         callingPendingFunctors_(false),
+                         quit_(false), callingPendingFunctors_(false),
+                         threadId_(CurrentThread::tid()),
                          poller_(Poller::newDefaultPolle(this)),
                          wakeupfd_(createEventfd()),
-                         wakeupChannel_(new Channel(this, wakeupfd_)),
-                         threadId_(CurrentThread::tid())
+                         wakeupChannel_(new Channel(this, wakeupfd_))
+
 {
     LOG_DEBUG("EventLoop created %p in thread %d \n", this, threadId_);
 
     // 执行构造EventLoop的时候、t_loopInthisThread已经有值。意味着这个EventLoop已经有对应的、存在的线程
-    if (t_loopInthisThread)
+    if (t_loopInthisThread) // 多次start
     {
         LOG_FATAL("Another EventLoop %p exists in this thread %d \n", t_loopInthisThread, threadId_);
     }
     else
     {
-        t_loopInthisThread = this;
+        t_loopInthisThread = this; // 初始化t_loopInthisThread
     }
 
     // 设置wakeupfd的事件类型以及发生事件后的回调操作
@@ -62,6 +68,7 @@ void EventLoop::loop()
 {
     looping_ = true;
     quit_ = false;
+
     LOG_INFO("EventLoop %p start looping \n", this);
 
     while (!quit_)
@@ -71,17 +78,14 @@ void EventLoop::loop()
         // 在这里会阻塞、调用了epoll_wait
         pollReturnTime_ = poller_->poll(KPollTimeMs, &activeChannels_);
 
+        // 到这里，poller就已经返回了，说明有事件发生了
         for (Channel *channel : activeChannels_)
         {
             // Poller监听哪些channel发生事件了，然后上报给EventLoop，通知channel处理相应的事件
             channel->handleEvent(pollReturnTime_);
         }
-        // 执行当前EventLoop事件循环需要处理的回调操作
-        /**
-         * IO线程 mainLoop acce
-         * pt fd《=channel subloop
-         * mainLoop 事先注册一个回调cb（需要subloop来执行）    wakeup subloop后，执行下面的方法，执行之前mainloop注册的cb操作
-         */
+
+        // Poller中事件发生后、执行当前EventLoop事件循环需要处理的回调操作
         doPendingFunctors();
     }
 
@@ -101,10 +105,14 @@ void EventLoop::quit()
     // 不是在自己线程中调用quit、唤醒自己的线程执行quit操作
     if (!isInLoopThread())
     {
-        wakeup();
+        wakeup(); // 唤醒loop所在的线程、执行退出
     }
 }
 
+/**
+ * @brief 返回poller返回的时间戳
+
+*/
 Timestamp EventLoop::pollReturnTime() const
 {
     return pollReturnTime_;
@@ -116,6 +124,7 @@ Timestamp EventLoop::pollReturnTime() const
 void EventLoop::runInLoop(Functor cb)
 {
     // q:为什么要分开处理？
+    // 保证一个fd只在一个线程中被处理
     if (isInLoopThread()) // 在当前的loop线程中，执行cb
     {
         cb();
@@ -147,7 +156,7 @@ void EventLoop::queueInLoop(Functor cb)
 }
 
 /**
- *@brief 用来唤醒loop所在的线程的  向wakeupfd_写一个数据，wakeupChannel就发生读事件，当前loop线程就会被唤醒--不会被epoll_wait阻塞
+ *@brief 用来唤醒loop所在的线程的  向wakeupfd_写一个数据，wakeupChannel就发生读事件，当前loop线程就会被唤醒---》执行回调。EventLoop::loop()中pendingFunctors_回调是在事件被触发后执行的
  */
 void EventLoop::wakeup()
 {
@@ -157,24 +166,35 @@ void EventLoop::wakeup()
     {
         LOG_ERROR("EventLoop::wakeup() writes %lu bytes instead of 8 \n", n);
     }
+    // 写入数据后、EventLoop::loop()便不会因为没有事件而阻塞
+    // 会立即返回，执行doPendingFunctors()，执行回调
 }
 
 /**
- * @brief 搭建了poller与channel交流的平台
+ * @brief 注册或更新channel。
+ * 搭建了poller与channel交流的平台
  */
-void EventLoop::updatChannel(Channel *channel)
+void EventLoop::updateChannel(Channel *channel)
 {
     poller_->updateChannel(channel);
 }
 
+/**
+ * @brief 从poller中删除channel
+
+*/
 void EventLoop::removeChannel(Channel *channel)
 {
     poller_->removeChannle(channel);
 }
 
-void EventLoop::hasChannel(Channel *channel)
+/**
+ * @brief 判断channel是否在poller中
+
+*/
+bool EventLoop::hasChannel(Channel *channel)
 {
-    poller_->hasChannel(channel);
+    return poller_->hasChannel(channel);
 }
 
 //
@@ -183,7 +203,9 @@ void EventLoop::hasChannel(Channel *channel)
  */
 bool EventLoop::isInLoopThread() const
 {
-    //
+    // CurrentThread::tid()返回当前线程的tid
+    // 在每个线程初始化时、已经缓存了当前线程的tid（CurrentThread::t_cachedTid）
+    // 如果当前loop所在线程的tid和当前线程的tid相等，说明当前loop对象在当前线程中
     return threadId_ == CurrentThread::tid();
 }
 
@@ -219,9 +241,9 @@ void EventLoop::doPendingFunctors() // 执行回调
 void EventLoop::handleRead()
 {
     uint64_t one = 1;
-    ssize_t n = read(wakeupfd_, &one, sizeof(one));
-    if (n != sizeof(one))
+    ssize_t n = read(wakeupfd_, &one, sizeof one);
+    if (n != sizeof one)
     {
-        LOG_ERROR("eventloop::handleRead() reads %d byters instead of 8", n);
+        LOG_ERROR("EventLoop::handleRead() reads %lu bytes instead of 8", n);
     }
 }

@@ -5,17 +5,30 @@
 
 #include <algorithm>
 
+/**
+ * 数据布局：
+ * |kCheapPrepend |空闲块1| readerIndex_| 剩余未读数据| writerIndex_| 空闲块2| size|
+ *
+ * 空闲块1：由于读操作而留下的空闲块（数据已读出）
+ * 空闲块2：由于写操作而留下的空闲块（数据未写入）
+ */
+
 class Buffer
 {
 private:
     std::vector<char> buffer_;
-    size_t readerIndex_;
-    size_t writerIndex_;
+    size_t readerIndex_; // 读指针
+    size_t writerIndex_; // 写指针
 
 public:
     static const size_t kCheapPrepend = 8;   // 预留8字节的空间
     static const size_t kInitialSize = 1024; // 初始大小为1KB
-    explicit Buffer(size_t initialSize = kInitialSize);
+    explicit Buffer(size_t initialSize = kInitialSize)
+        : buffer_(kCheapPrepend + initialSize),
+          readerIndex_(kCheapPrepend),
+          writerIndex_(kCheapPrepend)
+    {
+    }
     ~Buffer();
 
     size_t readableBytes() const;

@@ -15,9 +15,7 @@ class Poller : noncopyable
 {
 public:
     using ChannelList = std::vector<Channel *>;
-
-    // key:sockfd value: Channel*
-    using ChannelMap = std::unordered_map<int, Channel *>;
+    using ChannelMap = std::unordered_map<int, Channel *>; // fd和channel的映射关系
 
 protected:
     ChannelMap Channels_; // Poller中的CHannel列表，保存fd和channel的映射关系,用于快速查找fd对应的channel.
@@ -28,9 +26,8 @@ private:
 public:
     Poller(EventLoop *loop);
     virtual ~Poller() = default;
-    /**
-     * @brief 给所有IO复用保留同一的接口--纯虚函数
-     */
+
+    // 给所有IO复用保留统一的接口
     /**
      * @brief 开启底层事件循环、等待事件的发生
      */

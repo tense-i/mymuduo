@@ -15,10 +15,9 @@
 class Thread : noncopyable
 {
 public:
-    using ThreadFunc = std::function<void()>;
+    using ThreadFunc = std::function<void()>; // 线程任务函数
     explicit Thread(ThreadFunc, const std::string &name = std::string());
     ~Thread();
-    void setDefaultName();
 
     void start();
     void join();
@@ -43,4 +42,6 @@ private:
     ThreadFunc func_;                   // 线程函数
     std::string name_;                  // 线程名
     static std::atomic_int numCreated_; // 原子类型、创建的线程数
+
+    void setDefaultName();
 };

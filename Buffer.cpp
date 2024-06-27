@@ -3,12 +3,6 @@
 #include <unistd.h>
 #include <errno.h>
 #include <cstring>
-Buffer::Buffer(size_t initialSize)
-    : buffer_(kCheapPrepend + initialSize),
-      readerIndex_(kCheapPrepend),
-      writerIndex_(kCheapPrepend)
-{
-}
 
 Buffer::~Buffer()
 {
@@ -23,7 +17,7 @@ size_t Buffer::readableBytes() const
 }
 
 /**
- * @brief 返回可写的字节数
+ * @brief 返回可写的字节数。空闲块2
 
 */
 size_t Buffer::writableBytes() const
@@ -32,7 +26,7 @@ size_t Buffer::writableBytes() const
 }
 
 /**
- * @brief 返回预留的字节数
+ * @brief 返回预留的字节数、大小为空闲块1+kCheapPrepend
 
 */
 size_t Buffer::prependableBytes() const
@@ -73,7 +67,7 @@ void Buffer::retrieveAll()
 }
 
 /**
- * @brief 委托给retrieveAllAsString(size_t len)
+ * @brief 从缓冲区中读取全部数据,并返回读取的数据以string形式
  */
 std::string Buffer::retrieveAllAsString()
 {
@@ -96,6 +90,7 @@ std::string Buffer::retrieveAllAsString(size_t len)
  */
 void Buffer::ensureWritableBytes(size_t len)
 {
+    // 空闲块2 < 待写入的数据长度
     if (writableBytes() < len)
     {
         makeSpace(len); // 扩容
@@ -113,6 +108,10 @@ void Buffer::append(const char *data, size_t len)
     writerIndex_ += len;
 }
 
+/**
+ * @brief 返回可写的缓冲区的起始地址
+
+*/
 char *Buffer::beginWrite()
 {
     return begin() + writerIndex_;
@@ -124,18 +123,20 @@ char *Buffer::beginWrite()
  */
 ssize_t Buffer::readFd(int fd, int *savedErrno)
 {
-    char extrabuf[65536]; // 64KB
+    char extrabuf[65536]; // 64KB栈空间
     bzero(extrabuf, sizeof(extrabuf));
 
     struct iovec vec[2];                     // 两块缓冲区,iovector
     const size_t writable = writableBytes(); // 这是Buffer底层缓冲区剩余的可写空间大小
 
+    // 第一块缓冲区、指向Buffer缓冲区
     vec[0].iov_base = begin() + writerIndex_;
     vec[0].iov_len = writable;
 
+    // 第二块缓冲区、指向extrabuf
     vec[1].iov_base = extrabuf;
     vec[1].iov_len = sizeof extrabuf;
-    // iovec 结构体数组中的元素个数
+    // 当前Buffer缓冲区的可写缓冲区大小足够存储读出来的数据、不使用extrabuf iovcnt=1
     const int iovcnt = (writable < sizeof extrabuf) ? 2 : 1;
 
     const ssize_t n = ::readv(fd, vec, iovcnt);
@@ -147,7 +148,7 @@ ssize_t Buffer::readFd(int fd, int *savedErrno)
     {
         writerIndex_ += n;
     }
-    else // extrabuf里面也写入了数据
+    else // 使用了两块缓存区、extrabuf里面也写入了数据
     {
         writerIndex_ = buffer_.size();
         append(extrabuf, n - writable); // writerIndex_开始写 n - writable大小的数据
@@ -180,17 +181,20 @@ char *Buffer::begin()
 
 /**
  * @brief 扩容操作
+ * @param len 待写入的数据长度
  */
 void Buffer::makeSpace(size_t len)
 {
+
+    // 空闲块2+空闲块1+预留的空间 < 待写入的数据长度 + 预留的空间
     if (writableBytes() + prependableBytes() < len + kCheapPrepend)
     {
         // 扩容
         buffer_.resize(writerIndex_ + len);
     }
-    else
-    { // 如果缓冲区有足够的空间但布局不合理（即，存在未使用的前置空间），则将可读数据前移
-        // 将可读数据前移
+    else // 空闲块2+空闲块1+预留的空间 >= 待写入的数据长度 + 预留的空间
+    {    // 如果缓冲区有足够的空间但布局不合理（即，存在未使用的前置空间），则将可读数据前移
+        // 将可读数据前移、合并空闲块1和空闲块2
         size_t readable = readableBytes();
         std::copy(begin() + readerIndex_,
                   begin() + writerIndex_,

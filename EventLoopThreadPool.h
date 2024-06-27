@@ -15,16 +15,6 @@ class EventLoopThread;
 // a: 同一管理多个EventLoop对象，用于多线程中的事件循环处理。
 class EventLoopThreadPool : noncopyable
 {
-private:
-    // 服务端的主EventLoop、单线程时的EventLoop
-    EventLoop *baseLoop_;
-    std::string name_;
-    bool started_;
-    int numThreads_; // 线程池中线程的数量
-    // 线程池的下一个要执行的EventLoop-0开始
-    int next_;
-    std::vector<std::unique_ptr<EventLoopThread>> threads_; // 该EventLoopThreadPool线程池中的线程集合
-    std::vector<EventLoop *> loops_;                        // 该EventLoopThreadPool线程池中的EventLoop集合
 
 public:
     using ThreadInitCallback = std::function<void(EventLoop *)>;
@@ -40,4 +30,15 @@ public:
     const std::string name() const { return name_; }
 
     void setThreadNum(int numThreads) { numThreads_ = numThreads; }
+
+private:
+    // 服务端的主EventLoop、单线程时的EventLoop
+    EventLoop *baseLoop_;
+    std::string name_;
+    bool started_;
+    int numThreads_; // 线程池中线程的数量
+    // 线程池的下一个要执行的EventLoop-0开始
+    int next_;
+    std::vector<std::unique_ptr<EventLoopThread>> threads_; // 该EventLoopThreadPool线程池中的线程集合
+    std::vector<EventLoop *> loops_;                        // 该EventLoopThreadPool线程池中的EventLoop集合
 };

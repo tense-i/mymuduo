@@ -5,8 +5,8 @@ InetAddr::InetAddr(uint16_t port, std::string ip)
 {
     bzero(&addr_, sizeof(addr_));
     addr_.sin_family = AF_INET;
-    addr_.sin_port = htons(port);
-    addr_.sin_addr.s_addr = inet_addr(ip.c_str());
+    addr_.sin_port = htons(port);                  // 主机字节序转网络字节序
+    addr_.sin_addr.s_addr = inet_addr(ip.c_str()); // 点分十进制ip地址转换为网络字节序
 }
 
 InetAddr::InetAddr(const sockaddr_in &addr) : addr_(addr)

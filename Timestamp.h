@@ -8,7 +8,7 @@
 class Timestamp
 {
 private:
-    int64_t microSecondsSinceEpoch_;
+    int64_t microSecondsSinceEpoch_; // 微秒
 
 public:
     Timestamp();

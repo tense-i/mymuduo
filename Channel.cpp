@@ -1,6 +1,6 @@
 #include "Channel.h"
 #include "Logger.h"
-
+#include "EventLoop.h"
 #include <sys/epoll.h>
 
 const int Channel::kNoneEvent = 0;
@@ -8,7 +8,7 @@ const int Channel::kReadEvent = EPOLLIN | EPOLLPRI;
 const int Channel::kWriteEvent = EPOLLOUT;
 
 /**
- * @param loop loop中包含了许多的channel（fd）poller
+ * @param loop 该channel所属的eventloop
  */
 Channel::Channel(EventLoop *loop, int fd) : loop_(loop), fd_(fd), events_(kNoneEvent), revents_(kNoneEvent), index_(-1), tied_(false)
 {
@@ -52,7 +52,11 @@ int Channel::index()
     return index_;
 }
 
-void Channel::set_index(int idx)
+/**
+ * @brief 设置channel在EpollPoller中的状态
+
+*/
+void Channel::setIndex(int idx)
 {
     index_ = idx;
 }
@@ -68,20 +72,19 @@ EventLoop *Channel::ownerLoop()
 /**
  * @brief 在channel所属的eventloop中、把当前的channel删除
  */
+
 void Channel::remove()
 {
-    // redo add code...
-    //  loop_->removeChannel(this);
+    loop_->removeChannel(this);
 }
 
 /**
- * @brief 当改变channel所表示fd的events事件后，update负责在poller里面更改fd相应的事件epoll_ctl
- * EventLoop => ChannelList   Poller
+ * @brief 在channel所属的eventloop中、更新channel的fd的events事件.
  */
 void Channel::update()
 {
     // 通过channel所属的eventloop、调用poller的相应方法、注册fd的events事件
-    // loop_->updateChannel(this);
+    loop_->updateChannel(this);
 }
 
 /**
@@ -91,48 +94,54 @@ void Channel::update()
 void Channel::handleEventWithGuard(Timestamp receiveTime)
 {
     LOG_INFO("channel handleEvent revents:%d\n", revents_);
-    if ((revents_ & EPOLLHUP) && !(revents_ & EPOLLIN)) // 客户端连接断开
+    if ((revents_ & EPOLLHUP) && !(revents_ & EPOLLIN)) // 客户端连接断开、closeCallBack_会将channel从poller中删除
     {
         if (closeCallBack_)
             closeCallBack_();
     }
-    else if (revents_ & (EPOLLIN | EPOLLPRI)) // 读
-    {
-        if (readCallBack_)
-            readCallBack_(receiveTime);
-    }
-    else if ((revents_ & EPOLLOUT)) // 写
-    {
-        if (writeCallBack_)
-            writeCallBack_();
-    }
-    else if ((revents_ & EPOLLERR)) // 错误
+
+    if ((revents_ & EPOLLERR)) // 错误
     {
         if (errorCallBack_)
             errorCallBack_();
     }
+
+    if (revents_ & (EPOLLIN | EPOLLPRI)) // 读事件
+    {
+        if (readCallBack_)
+            readCallBack_(receiveTime);
+    }
+
+    if ((revents_ & EPOLLOUT)) // 写事件
+    {
+        if (writeCallBack_)
+            writeCallBack_();
+    }
 }
 
 /**
- * @brief 绑定一个弱指针作为监视者
+ * @brief fd得到poller通知以后，处理事件的分发处理
+ * @param receiveTime 事件发生的时间
  */
 void Channel::handleEvent(Timestamp receiveTime)
 {
-    if (tied_)
+    if (tied_) // 防止channel在客户端主动remove掉、channel还在执行回调操作。具体看笔记Channel的tie_涉及到的精妙之处
     {
         // 提升弱指针
         std::shared_ptr<void> guard = tie_.lock();
-        if (guard)
+        if (guard) // 说明channel还在
         {
             handleEventWithGuard(receiveTime);
         }
     }
-    else
+    else // channel已经被remove掉了
     {
         handleEventWithGuard(receiveTime);
     }
 }
-
+/**
+ * @brief 防止当channel被手动remove掉、channel还在执行回调操作
+ */
 void Channel::tie(const std::shared_ptr<void> &obj)
 {
     tie_ = obj;
@@ -149,20 +158,19 @@ int Channel::events()
     return events_;
 }
 
-int Channel::revents()
+void Channel::setRevents(int revts)
 {
-    return revents_;
+    revents_ = revts;
 }
 
-void Channel::setRevent(int revents)
-{
-    revents_ = revents;
-}
+/**
+ * @brief 使能读事件
 
+*/
 void Channel::enableReading()
 {
     events_ |= kReadEvent;
-    update();
+    update(); // 更新channel的fd的events事件
 }
 
 void Channel::disableReading()

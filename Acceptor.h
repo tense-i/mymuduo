@@ -3,15 +3,17 @@
 #include "noncopyable.h"
 #include "Channel.h"
 #include <functional>
-#include "./Socket.h"
+#include "Socket.h"
 
+class EventLoop;
+class InetAddress;
 // Acceptor类的作用是封装accept函数，用于接受新的连接
 class Acceptor : noncopyable
 {
 public:
     using NewConnectionCB = std::function<void(int sockfd, const InetAddr &)>;
 
-    Acceptor(EventLoop *loop, const InetAddr &listenAddr, bool reuseport = false);
+    Acceptor(EventLoop *loop, const InetAddr &listenAddr, bool reuseport);
     ~Acceptor();
 
     void setNewConnectionCallback(const NewConnectionCB &cb)

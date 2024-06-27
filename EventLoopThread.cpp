@@ -8,10 +8,11 @@
  * @param cb 回调函数，用于在EventLoop对象创建完毕后执行一些初始化操作,默认为空,由EventLoopThreadPool类传入
  * @param name EventLoopThread的名字、区分不同的EventLoopThread对象
  */
-EventLoopThread::EventLoopThread(const ThreadInitCallback &cb, const std::string &name)
+EventLoopThread::EventLoopThread(const ThreadInitCallback &cb,
+                                 const std::string &name)
     : loop_(nullptr),
       exiting_(false),
-      thread_(std::bind(&EventLoopThread::threadFunc, this), name), // 将threadFunc函数绑定到Thread类的对象中运行
+      thread_(std::bind(&EventLoopThread::threadFunc, this), name),
       mutex_(),
       cond_(),
       callback_(cb)
@@ -29,7 +30,7 @@ EventLoopThread::~EventLoopThread()
 }
 
 /**
- * @brief 创建一个新的线程，并在新线程中运行一个新的EventLoop对象、开启服务线程。
+ * @brief 创建一个新的线程、并没有开启服务，并在新线程中运行一个新的EventLoop对象、开启服务线程。
  * @return EventLoop* 返回新创建的EventLoop对象。返回值被EventLoopThreadPool类使用、由它进行同一管理。
  */
 EventLoop *EventLoopThread::startLoop()
