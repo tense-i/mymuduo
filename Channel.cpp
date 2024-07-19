@@ -140,7 +140,7 @@ void Channel::handleEvent(Timestamp receiveTime)
     }
 }
 /**
- * @brief 防止当channel被手动remove掉、channel还在执行回调操作
+ * @brief  将传入的 std::shared_ptr 存储为 std::weak_ptr。效果：防止当channel被手动remove掉、channel还在执行回调操作。
  */
 void Channel::tie(const std::shared_ptr<void> &obj)
 {

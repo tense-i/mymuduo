@@ -3,6 +3,7 @@
 #include "Poller.h"
 #include "Channel.h"
 
+#include <signal.h>
 #include <sys/eventfd.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -26,6 +27,18 @@ int createEventfd()
     }
     return evtfd;
 }
+
+class IgnoreSigPipe
+{
+public:
+    IgnoreSigPipe()
+    {
+        // 忽略SIGPIPE信号、利用全局数据区的初始化特性
+        ::signal(SIGPIPE, SIG_IGN);
+    }
+};
+
+IgnoreSigPipe initObj; // 全局对象、初始化时、忽略SIGPIPE信号
 
 EventLoop::EventLoop() : looping_(false),
                          quit_(false), callingPendingFunctors_(false),

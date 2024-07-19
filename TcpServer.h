@@ -55,6 +55,12 @@ private:
 
     std::shared_ptr<EventLoopThreadPool> threadPool_; // 线程池,mainLoop-->subLoop,用于处理新连接的读写事件
 
+    /**
+     * @brief 一下的回调均为业务层回调、用于回调业务层的业务逻辑
+     * Channel::ReadCallBack_ ->TcpConnection::headleRead ->TcpServer::messageCallBack_ ->EchoServer::onMessage
+     *
+     */
+
     ConnectionCallback connectionCallback_; // 有新连接时的回调函数
 
     MessageCallback messageCallback_; // 有读写事件时的回调函数

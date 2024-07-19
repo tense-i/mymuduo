@@ -90,12 +90,13 @@ void TcpConnection::shutdown()
 }
 
 /**
- * @brief 连接建立
+ * @brief 连接建立、主要任务是向polle（subLoop）r注册读写事件。
 
 */
 void TcpConnection::connectEstablished()
 {
     setState(kConnected);
+    // 初始化tie_、用于观察channel_是否还在
     channel_->tie(shared_from_this());
     channel_->enableReading(); // 向poller注册channel的epollin事件
 
@@ -230,7 +231,8 @@ void TcpConnection::sendInLoop(const void *data, size_t len)
         LOG_ERROR("disconnected, give up writing!");
         return;
     }
-    // 表示channel_第一次开始写数据，而且缓冲区没有待发送数据
+
+    // 如果outputBuffer_为空，说明数据可以直接写到fd中
     if (!channel_->isWriting() && outputBuffer_.readableBytes() == 0)
     {
         // 直接调用write函数发送数据到fd

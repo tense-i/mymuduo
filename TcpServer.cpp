@@ -86,7 +86,7 @@ void TcpServer::newConnection(int sockfd, const InetAddr &peerAddr)
     LOG_INFO("TcpServer::newConnection [%s] - new connection [%s] from %s \n",
              name_.c_str(), connName.c_str(), peerAddr.toIpPort().c_str());
 
-        // 通过sockfd获取其绑定的本机的ip地址和端口信息
+    // 通过sockfd获取其绑定的本机的ip地址和端口信息
     sockaddr_in local;
     ::bzero(&local, sizeof local);
     socklen_t addrlen = sizeof local;
