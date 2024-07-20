@@ -53,7 +53,8 @@
         "stop_token": "cpp",
         "thread": "cpp",
         "cstring": "cpp",
-        "set": "cpp"
+        "set": "cpp",
+        "shared_mutex": "cpp"
     },
     "cmake.configureOnOpen": false
 }

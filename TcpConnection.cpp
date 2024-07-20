@@ -8,6 +8,31 @@
 #include <unistd.h>
 
 /**
+ * @brief 默认的连接回调函数
+
+*/
+void defaultConnectionCallback(const TcpConnectionPtr &conn)
+{
+    LOG_INFO("%s -> %s is %s \n", conn->localAddr().toIpPort().c_str(), conn->peerAddr().toIpPort().c_str(), conn->connected() ? "UP" : "DOWN");
+}
+
+/**
+ * @brief 默认的消息回调函数
+ */
+void defaultMessageCallback(const TcpConnectionPtr &, Buffer *buf, Timestamp)
+{
+    buf->retrieveAll();
+}
+
+/**
+ * @brief 默认的写完成回调函数
+
+*/
+void defaultWriteCompleteCallback(const TcpConnectionPtr &conn)
+{
+}
+
+/**
  * @brief 检查EventLoop是否为空
  */
 static EventLoop *CheckLoopNotNull(EventLoop *loop)
@@ -115,6 +140,19 @@ void TcpConnection::connectDestroyed()
         connectionCallback_(shared_from_this());
     }
     channel_->remove(); // 把channel从poller中删除掉
+}
+
+/**
+ * @brief 强制关闭连接
+
+*/
+void TcpConnection::forceClose()
+{
+    if (state_ == kConnected || state_ == kDisconnecting)
+    {
+        setState(kDisconnecting);
+        loop_->queueInLoop(std::bind(&TcpConnection::forceCloseInLoop, shared_from_this()));
+    }
 }
 
 /**
@@ -289,5 +327,13 @@ void TcpConnection::shutdownInLoop()
     if (!channel_->isWriting()) // 说明outputBuffer中的数据已经全部发送完成
     {
         socket_->shutdownWrite(); // 关闭写端
+    }
+}
+
+void TcpConnection::forceCloseInLoop()
+{
+    if (state_ == kConnected || state_ == kDisconnecting)
+    {
+        handleClose();
     }
 }

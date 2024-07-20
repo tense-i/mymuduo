@@ -29,6 +29,12 @@ void Connector::start()
     loop_->runInLoop(std::bind(&Connector::startInLoop, this)); //
 }
 
+void Connector::stop()
+{
+    connect_ = false;
+    loop_->queueInLoop(std::bind(&Connector::stopInLoop, this));
+}
+
 void Connector::startInLoop()
 {
     if (connect_)
@@ -38,6 +44,16 @@ void Connector::startInLoop()
     else
     {
         LOG_DEBUG("do not connect");
+    }
+}
+
+void Connector::stopInLoop()
+{
+    if (state_ == KConnecting)
+    {
+        setState(KDisconnected);
+        int sockfd = removeAndResetChannel();
+        retry(sockfd);
     }
 }
 

@@ -52,6 +52,9 @@ public:
     void connectEstablished();
     void connectDestroyed();
 
+    void forceClose();                        // 强制关闭连接
+    void forceCloseWithDelay(double seconds); // 延迟关闭连接
+
 private:
     enum StateE
     {
@@ -69,6 +72,7 @@ private:
 
     void sendInLoop(const void *message, size_t len);
     void shutdownInLoop();
+    void forceCloseInLoop(); // 在io线程中强制关闭连接
     // IO线程
     EventLoop *loop_; // 这里绝对不是baseLoop， 因为TcpConnection都是在subLoop里面管理的
 
@@ -94,3 +98,7 @@ private:
     Buffer inputBuffer_;  // 接收数据的缓冲区
     Buffer outputBuffer_; // 发送数据的缓冲区
 };
+
+void defaultConnectionCallback(const TcpConnectionPtr &conn);                                     // 连接回调函数
+void defaultMessageCallback(const TcpConnectionPtr &conn, Buffer *buffer, Timestamp receiveTime); // 消息回调函数
+void defaultWriteCompleteCallback(const TcpConnectionPtr &conn);                                  // 写完成回调函数

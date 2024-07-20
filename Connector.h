@@ -18,6 +18,8 @@ public:
     void start();   // can be called in any thread // 可以在任意线程调用
     void restart(); // must be called in loop thread // 必须在loop所在的线程中调用
     void stop();    // can be called in any thread // 可以在任意线程调用
+    const InetAddr &serverAddr() const { return serverAddr_; }
+
 private:
     enum States
     {
@@ -40,6 +42,7 @@ private:
 
 private:
     void startInLoop();          // 只能在loop所在线程中调用
+    void stopInLoop();           // 只能在loop所在线程中调用
     void connect();              // 连接服务器
     void connecting(int sockfd); // 连接成功
     void setState(States s) { state_ = s; }
