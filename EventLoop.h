@@ -9,10 +9,12 @@
 #include "noncopyable.h"
 #include "Timestamp.h"
 #include "CurrentThread.h"
-
+#include "TimerId.h"
+#include "TimerQueue.h"
+#include "Timer.h"
 class Channel;
 class Poller;
-
+class TimerQueue;
 /**
  * @brief 事件循环类  主要包含了两个大模块 Channel   Poller（epoll的抽象）。EventLoop是Reactor模式的核心
  * 1. 启动或者退出事件循环
@@ -42,6 +44,10 @@ public:
     bool hasChannel(Channel *channel);
     bool isInLoopThread() const;
 
+    TimerId runAt(Timestamp time, TimerCallback cb);     // 在指定的时间执行回调函数
+    TimerId runAfter(double delay, TimerCallback cb);    // 在指定的时间间隔后执行回调函数
+    TimerId runEvery(double interval, TimerCallback cb); // 每隔一段时间执行回调函数
+
 private:
     void doPendingFunctors();
     void handleRead();
@@ -66,4 +72,6 @@ private:
     ChannelList activeChannels_;
     std::vector<Functor> pendingFunctors_; // 存储loop需要执行的所有回调操作
     std::mutex mutex_;                     // 互斥锁，用来保护上面vector容器的线程安全操作
+
+    std::unique_ptr<TimerQueue> timerQueue_; // 定时器队列
 };

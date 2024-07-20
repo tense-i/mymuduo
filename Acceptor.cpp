@@ -6,22 +6,13 @@
 #include <sys/socket.h>
 #include <errno.h>
 #include <unistd.h>
-static int createNonblockingFd()
-{
-    int sockfd = ::socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK | SOCK_CLOEXEC, 0);
-    if (sockfd < 0)
-    {
-        LOG_FATAL("%s:%s:%d listen socket create err:%d \n", __FILE__, __FUNCTION__, __LINE__, errno);
-    }
-    return sockfd;
-}
 
 /**
  * @param loop mainLoop(mainReactor)对象
  */
 Acceptor::Acceptor(EventLoop *loop, const InetAddr &listenAddr, bool reuseport)
     : loop_(loop),
-      acceptSocket_(createNonblockingFd()),
+      acceptSocket_(Socket::createNonblockingFd()),
       acceptChannel_(loop, acceptSocket_.fd()),
       listenning_(false)
 {

@@ -35,4 +35,10 @@ public:
     void setKeepAlive(bool on);
 
     void shutdownWrite();
+
+    static int getSocketError(int sockfd);       // 获取socket错误
+    static int createNonblockingFd();            // 创建一个非阻塞的socket
+    static bool isSelfConnect(int sockfd);       // 判断是否是自连接
+    static sockaddr_in getLocalAddr(int sockfd); // 获取本地地址
+    static sockaddr_in getPeerAddr(int sockfd);  // 获取对端地址
 };

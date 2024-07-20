@@ -169,4 +169,10 @@ CMakeFiles/mymuduo.dir/EventLoopThread.cpp.o: \
  /usr/include/c++/11/bits/stl_vector.h \
  /usr/include/c++/11/bits/stl_bvector.h \
  /usr/include/c++/11/bits/vector.tcc /home/tensei/code/modou/Timestamp.h \
- /home/tensei/code/modou/CurrentThread.h
+ /home/tensei/code/modou/CurrentThread.h \
+ /home/tensei/code/modou/TimerId.h /home/tensei/code/modou/TimerQueue.h \
+ /home/tensei/code/modou/CallBacks.h /home/tensei/code/modou/Channel.h \
+ /usr/include/c++/11/set /usr/include/c++/11/bits/stl_tree.h \
+ /usr/include/c++/11/bits/stl_set.h \
+ /usr/include/c++/11/bits/stl_multiset.h \
+ /usr/include/c++/11/bits/erase_if.h /home/tensei/code/modou/Timer.h

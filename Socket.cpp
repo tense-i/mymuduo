@@ -97,3 +97,67 @@ void Socket::shutdownWrite()
         LOG_ERROR("shutdownWrite error");
     }
 }
+
+int Socket::getSocketError(int sockfd)
+{
+    int optval;
+    socklen_t optlen = static_cast<socklen_t>(sizeof optval);
+    if (::getsockopt(sockfd, SOL_SOCKET, SO_ERROR, &optval, &optlen) < 0)
+    {
+        return errno;
+    }
+    else
+    {
+        return optval;
+    }
+}
+
+int Socket::createNonblockingFd()
+{
+    int sockfd = ::socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK | SOCK_CLOEXEC, 0);
+    if (sockfd < 0)
+    {
+        LOG_FATAL("%s:%s:%d listen socket create err:%d \n", __FILE__, __FUNCTION__, __LINE__, errno);
+    }
+    return sockfd;
+}
+
+bool Socket::isSelfConnect(int sockfd)
+{
+    struct sockaddr_in localaddr = getLocalAddr(sockfd);
+    struct sockaddr_in peeraddr = getPeerAddr(sockfd);
+
+    // 检查地址族是否为 AF_INET (IPv4)
+    if (localaddr.sin_family == AF_INET && peeraddr.sin_family == AF_INET)
+    {
+        return localaddr.sin_port == peeraddr.sin_port && localaddr.sin_addr.s_addr == peeraddr.sin_addr.s_addr;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+sockaddr_in Socket::getLocalAddr(int sockfd)
+{
+    struct sockaddr_in localaddr;
+    bzero(&localaddr, sizeof(localaddr));
+    socklen_t addrlen = sizeof(localaddr);
+    if (::getsockname(sockfd, (sockaddr *)&localaddr, &addrlen) < 0)
+    {
+        LOG_ERROR("getLocalAddr error");
+    }
+    return localaddr;
+}
+
+sockaddr_in Socket::getPeerAddr(int sockfd)
+{
+    struct sockaddr_in peeraddr;
+    bzero(&peeraddr, sizeof(peeraddr));
+    socklen_t addrlen = sizeof(peeraddr);
+    if (::getpeername(sockfd, (sockaddr *)&peeraddr, &addrlen) < 0)
+    {
+        LOG_ERROR("getPeerAddr error");
+    }
+    return peeraddr;
+}

@@ -39,3 +39,12 @@ std::string Timestamp::toString() const
              tm_time->tm_sec);
     return buf;
 }
+
+/**
+ * @brief 判断时间戳是否有效
+
+*/
+bool Timestamp::valid() const
+{
+    return microSecondsSinceEpoch_ > 0;
+}

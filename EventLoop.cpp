@@ -2,7 +2,7 @@
 #include "Logger.h"
 #include "Poller.h"
 #include "Channel.h"
-
+#include "TimerQueue.h"
 #include <signal.h>
 #include <sys/eventfd.h>
 #include <fcntl.h>
@@ -45,7 +45,8 @@ EventLoop::EventLoop() : looping_(false),
                          threadId_(CurrentThread::tid()),
                          poller_(Poller::newDefaultPolle(this)),
                          wakeupfd_(createEventfd()),
-                         wakeupChannel_(new Channel(this, wakeupfd_))
+                         wakeupChannel_(new Channel(this, wakeupfd_)),
+                         timerQueue_(new TimerQueue(this))
 
 {
     LOG_DEBUG("EventLoop created %p in thread %d \n", this, threadId_);
@@ -220,6 +221,30 @@ bool EventLoop::isInLoopThread() const
     // 在每个线程初始化时、已经缓存了当前线程的tid（CurrentThread::t_cachedTid）
     // 如果当前loop所在线程的tid和当前线程的tid相等，说明当前loop对象在当前线程中
     return threadId_ == CurrentThread::tid();
+}
+
+/**
+ * @brief 在指定的时间执行回调函数
+
+*/
+TimerId EventLoop::runAt(Timestamp time, TimerCallback cb)
+{
+    return timerQueue_->addTimer(std::move(cb), time, 0.0);
+}
+
+/**
+ * @brief 在指定的时间间隔后执行回调函数
+ */
+TimerId EventLoop::runAfter(double delay, TimerCallback cb)
+{
+    Timestamp time(addTime(Timestamp::now(), delay));
+    return runAt(time, std::move(cb));
+}
+
+TimerId EventLoop::runEvery(double interval, TimerCallback cb)
+{
+    Timestamp time(addTime(Timestamp::now(), interval));
+    return timerQueue_->addTimer(std::move(cb), time, interval);
 }
 
 /**
